@@ -1,5 +1,5 @@
 __author__ = 'Suraj'
-import urllib
+import urllib.request
 
 def read_text(textfile):
     with open(textfile) as f:
@@ -8,12 +8,12 @@ def read_text(textfile):
 
 
 def check_profanity(text_to_check):
-    conn = urllib.open("http://www.wdyl.com/profanity?q=" + text_to_check)
-    output = conn.read()
-    conn.close()
-    if "true" in output:
+    with urllib.request.urlopen("http://www.wdyl.com/profanity?q=" + text_to_check) as response:
+        output = response.read()
+        output_string = output.decode('ascii')
+    if "true" in output_string:
         print("Profanity Alert!!!")
-    elif "false" in output:
+    elif "false" in output_string:
         print("This document has no swear words")
     else:
         print("Something went wrong... could not scan properly")
